@@ -1,18 +1,72 @@
 <ion-header>
-  <ion-navbar>
+  <ion-navbar color="primary">
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Home</ion-title>
+    <ion-title style="font-family: 'Prompt', sans-serif; text-align: center;">ขอบสนาม</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-  <h3>Ionic Menu Starter</h3>
 
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will show you the way.
-  </p>
+  <h4 style="text-align:center">กรุณาเลือกสนาม</h4>
+  <ion-item no-lines style="text-align:center">
+    <ion-list no-lines *ngFor="let item of items">
+      <button ion-button block class="stadium" [id]='item.id' (click)="selectTime(item.id)">
+          <p>{{item.title}}</p>
+        </button>
+    </ion-list>
+  </ion-item>
 
-  <button ion-button secondary menuToggle>Toggle Menu</button>
 </ion-content>
+
+<style>
+  ion-content {
+    font-family: 'Prompt', sans-serif;
+  }
+
+  #stadium1 {
+    background: url("./assets/imgs/stadium1.jpg");
+  }
+
+  #stadium2 {
+    background: url("./assets/imgs/stadium2.jpg");
+  }
+
+  #stadium3 {
+    background: url("./assets/imgs/stadium3.jpg");
+  }
+
+  #stadium4 {
+    background: url("./assets/imgs/stadium4.jpg");
+  }
+
+  #stadium5 {
+    background: url("./assets/imgs/stadium5.jpg");
+  }
+
+  #stadium1,
+  #stadium2,
+  #stadium3,
+  #stadium4,
+  #stadium5 {
+    background-size: 100%;
+    background-repeat: no-repeat;
+  }
+
+  .stadium {
+    height: 200px;
+    padding: 0;
+    margin: 5px auto;
+  }
+
+  .stadium p {
+    color: #000;
+    font-size: 25px;
+    font-weight: bold;
+    background: rgba(255, 255, 255, 0.7);
+    width: 100%;
+    padding: 50px;
+  }
+
+</style>

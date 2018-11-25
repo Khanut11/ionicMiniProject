@@ -1,5 +1,7 @@
 {
   "name": "ionicMiniProject",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "ionic-angular"
 }

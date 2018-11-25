@@ -1,37 +1,65 @@
-import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { Component, Injectable } from '@angular/core';
+import { NavController, NavParams, AlertController } from 'ionic-angular';
+import { FirebaseListObservable, AngularFireDatabase } from 'angularfire2/database';
 
+@Injectable()
 @Component({
   selector: 'page-list',
   templateUrl: 'list.html'
 })
 export class ListPage {
-  selectedItem: any;
-  icons: string[];
-  items: Array<{title: string, note: string, icon: string}>;
+  reserveList : FirebaseListObservable<any>
+  key: any
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-    // If we navigated to this page, we will have an item available as a nav param
-    this.selectedItem = navParams.get('item');
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+    public alertCtrl: AlertController, private fdb: AngularFireDatabase) {
 
-    // Let's populate this page with some filler content for funzies
-    this.icons = ['flask', 'wifi', 'beer', 'football', 'basketball', 'paper-plane',
-    'american-football', 'boat', 'bluetooth', 'build'];
-
-    this.items = [];
-    for (let i = 1; i < 11; i++) {
-      this.items.push({
-        title: 'Item ' + i,
-        note: 'This is item #' + i,
-        icon: this.icons[Math.floor(Math.random() * this.icons.length)]
-      });
-    }
+      this.reserveList = fdb.list('/reserves');
   }
 
-  itemTapped(event, item) {
-    // That's right, we're pushing to ourselves!
-    this.navCtrl.push(ListPage, {
-      item: item
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad ListPage');
+  }
+
+  removeBtn(key){
+    console.log("removeBtn on clicked");
+    this.key = key;
+    console.log(this.key = key);
+    this.removeAlert();
+  }
+
+  removeAlert(){
+    this.alertCtrl.create({
+      title: 'ยกเลิกการจอง',
+      subTitle: 'คุณต้องการยกเลิกการจองนี้หรือไม่',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel'
+        },
+        {
+          text: 'Confirm',
+          handler: () => {
+            this.removeReserve();
+          }
+        }
+      ]
+    }).present();
+  }
+
+  succesAlert() {
+    this.alertCtrl.create({
+      title: 'สำเร็จ',
+      subTitle: 'ยกเลิกการจองสนามเรียบร้อย',
+      buttons: ['OK']
+    }).present();
+  }
+
+  removeReserve(){
+    this.reserveList.remove(this.key).then(() => {
+      this.succesAlert();
+    }, error => {
+      console.log(error);
     });
   }
 }

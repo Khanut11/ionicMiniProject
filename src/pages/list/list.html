@@ -1,23 +1,32 @@
 <ion-header>
-  <ion-navbar>
+  <ion-navbar color="primary">
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>List</ion-title>
+    <ion-title style="font-family: 'Prompt', sans-serif">การจอง</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content>
   <ion-list>
-    <button ion-item *ngFor="let item of items" (click)="itemTapped($event, item)">
-      <ion-icon [name]="item.icon" item-start></ion-icon>
-      {{item.title}}
-      <div class="item-note" item-end>
-        {{item.note}}
+    <ion-item *ngFor="let reserve of reserveList | async">
+      <ion-item >
+        <p><strong>Stadium: </strong>{{reserve.stadium}}</p>
+        <p><strong>Date: </strong>{{reserve.date}}</p>
+        <p><strong>Time: </strong>{{reserve.time}}</p>
+        <p><strong>price: </strong>{{reserve.price}}</p>
+        <p><strong>Status: </strong>{{reserve.status}}</p>
+      </ion-item>
+      <div>
+        <button ion-button small color="danger" (click)="removeBtn(reserve.$key)">ยกเลิกการจอง</button>
       </div>
-    </button>
+    </ion-item>
   </ion-list>
-  <div *ngIf="selectedItem" padding>
-    You navigated here from <b>{{selectedItem.title}}</b>
-  </div>
 </ion-content>
+
+<style>
+  ion-content {
+    font-family: 'Prompt', sans-serif;
+  }
+
+</style>
